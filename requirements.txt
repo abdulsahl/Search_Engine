@@ -1,0 +1,11 @@
+Flask
+scikit-learn
+rank-bm25
+Sastrawi
+numpy
+pyspellchecker
+requests
+beautifulsoup4
+newspaper3k
+lxml[html_clean]
+jellyfish

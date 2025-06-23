@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine Sepak Bola</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            color: #202124; 
+            background-color: #fff;
+        }
+        
+        .google-blue { color: #4285f4; } 
+        .google-red { color: #ea4335; } 
+        .google-yellow { color: #fbbc05; } 
+        .google-green { color: #34a853; }
+        
+        /* Homepage Layout */
+        .home-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .logo { 
+            margin-bottom: 30px; 
+            font-size: 5rem; 
+            font-weight: 500; 
+            letter-spacing: -3px;
+            text-align: center;
+        }
+        
+        .search-container { 
+            width: 100%;
+            max-width: 580px;
+            position: relative;
+        }
+        
+        .search-box { 
+            display: flex; 
+            align-items: center;
+            border: 1px solid #dfe1e5; 
+            border-radius: 24px; 
+            padding: 12px 16px; 
+            position: relative; 
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08); 
+            background: white;
+            width: 100%;
+        }
+        
+        .search-box:hover, .search-box.active { 
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.15); 
+            border-color: rgba(223,225,229,0); 
+        }
+        
+        .search-box.active { 
+            border-bottom-left-radius: 0; 
+            border-bottom-right-radius: 0; 
+        }
+        
+        .search-box input { 
+            flex: 1; 
+            border: none; 
+            outline: none; 
+            font-size: 16px; 
+            height: 34px; 
+            background: transparent;
+            margin-left: 10px;
+        }
+        
+        .search-icon { 
+            color: #9aa0a6; 
+            font-size: 18px; 
+            display: flex; 
+            align-items: center; 
+            background: none; 
+            border: none; 
+            padding: 0; 
+            cursor: pointer;
+            min-width: 20px;
+        }
+        
+        /* Results Header */
+        .results-header { 
+            border-bottom: 1px solid #ebebeb; 
+            padding: 12px 20px; 
+            display: flex; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            background-color: white; 
+            z-index: 100;
+            min-height: 60px;
+        }
+        
+        .results-logo { 
+            font-size: 1.5rem; 
+            font-weight: 500; 
+            color: #4285f4; 
+            text-decoration: none; 
+            margin-right: 30px; 
+            letter-spacing: -1px;
+            white-space: nowrap;
+        }
+        
+        .results-search-box { 
+            flex: 1; 
+            max-width: 640px; 
+            position: relative; 
+            margin-right: 20px;
+        }
+        
+        /* Results Container */
+        .results-container { 
+            padding: 20px; 
+        }
+        
+        .search-stats { 
+            color: #70757a; 
+            font-size: 14px; 
+            margin-bottom: 15px; 
+        }
+        
+        .result-item { 
+            margin-bottom: 25px; 
+            padding-bottom: 15px;
+        }
+        
+        .result-title { 
+            color: #1a0dab; 
+            font-size: 20px; 
+            margin: 0 0 5px 0; 
+            font-weight: normal; 
+            text-decoration: none;
+            line-height: 1.3;
+        }
+        
+        .result-title:hover { 
+            text-decoration: underline; 
+        }
+        
+        .result-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .result-snippet { 
+            color: #4d5156; 
+            font-size: 14px; 
+            line-height: 1.58;
+            margin-bottom: 8px;
+        }
+        
+        .result-scores { 
+            font-size: 12px; 
+            color: #70757a;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: #1a0dab;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 8px;
+        }
+        
+        .read-more-btn:hover {
+            text-decoration: underline;
+        }
+        
+        /* Search Tools */
+        .search-tools { 
+            display: flex; 
+            padding: 10px 0; 
+            margin-bottom: 10px; 
+            font-size: 14px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-tools select { 
+            border: 1px solid #ddd; 
+            background: white; 
+            color: #5f6368; 
+            font-size: 14px; 
+            outline: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        mark { 
+            background-color: #ebebeb; 
+            color: inherit; 
+            font-weight: bold; 
+            padding: 0; 
+        }
+        
+        /* Suggestions */
+        .suggestion-box { 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            right: 0; 
+            background: white; 
+            border: 1px solid #dfe1e5; 
+            border-top: none; 
+            border-radius: 0 0 24px 24px; 
+            box-shadow: 0 4px 6px rgba(32, 33, 36, 0.18); 
+            z-index: 1000; 
+            display: none; 
+            padding: 8px 0;
+        }
+        
+        .suggestion-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 8px 20px; 
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .suggestion-item:hover { 
+            background-color: #f8f9fa; 
+        }
+        
+        .suggestion-icon { 
+            color: #70757a; 
+            margin-right: 14px; 
+            width: 20px; 
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .suggestion-text { 
+            flex-grow: 1; 
+        }
+        
+        .suggestion-remove { 
+            color: #70757a; 
+            cursor: pointer; 
+            padding: 4px 8px; 
+            font-size: 16px; 
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .suggestion-remove:hover { 
+            color: #000; 
+        }
+        
+        .suggestion-divider { 
+            border-top: 1px solid #ebebeb; 
+            margin: 8px 0; 
+        }
+        
+        .spelling-correction { 
+            font-style: italic; 
+            color: #1a0dab; 
+            cursor: pointer; 
+            margin-bottom: 10px; 
+        }
+        
+        /* Pagination */
+        .pagination-google { 
+            display: flex; 
+            justify-content: flex-start; 
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .pagination-google .page-item .page-link { 
+            color: #4285f4; 
+            border: none; 
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+        
+        .pagination-google .page-item.active .page-link { 
+            background-color: #4285f4; 
+            color: white; 
+            font-weight: bold; 
+        }
+        
+        /* Comparison Column */
+        .comparison-col { 
+            padding: 20px; 
+            border-left: 1px solid #ebebeb; 
+            background-color: #f8f9fa; 
+            min-height: calc(100vh - 70px); 
+        }
+        
+        .comparison-col h4 { 
+            font-size: 16px; 
+            color: #5f6368; 
+            margin-bottom: 15px;
+        }
+        
+        .comparison-col .list-group-item { 
+            font-size: 14px; 
+            background-color: transparent; 
+            border: none; 
+            border-bottom: 1px solid #eee; 
+            padding: 8px 0;
+        }
+        
+        .comparison-col p { 
+            font-size: 14px; 
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .results-logo {
+                margin-right: 0;
+                text-align: center;
+            }
+            
+            .results-search-box {
+                margin-right: 0;
+            }
+            
+            .comparison-col {
+                border-left: none;
+                border-top: 1px solid #ebebeb;
+                margin-top: 20px;
+                min-height: auto;
+            }
+            
+            .search-tools {
+                justify-content: flex-start;
+            }
+            
+            .result-scores {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .result-scores .ms-auto {
+                margin-left: 0 !important;
+                margin-top: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2.8rem;
+            }
+            
+            .search-container {
+                padding: 0 10px;
+            }
+            
+            .results-container {
+                padding: 15px;
+            }
+            
+            .pagination-google {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if not results and not no_results %}
+    <div class="home-container">
+        <h1 class="logo">
+            <span class="google-blue">S</span><span class="google-red">e</span><span class="google-yellow">p</span><span class="google-blue">a</span><span class="google-green">k</span>
+            <span class="google-red">B</span><span class="google-yellow">o</span><span class="google-blue">l</span><span class="google-green">a</span>
+        </h1>
+        <div class="search-container">
+            <form id="searchForm" method="post" action="/search">
+                <div class="search-box" id="searchBox">
+                    <button type="submit" class="search-icon" aria-label="Cari"><i class="fas fa-search"></i></button>
+                    <input type="text" id="queryInput" name="query" placeholder="Cari informasi sepak bola..." autocomplete="off" required />
+                    <input type="hidden" name="page" value="1"><input type="hidden" name="sort_by" value="bm25"><input type="hidden" name="sort_order" value="desc">
+                </div>
+                <div class="suggestion-box" id="suggestions"></div>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="results-header">
+        <a href="/" class="results-logo">
+             <span class="google-blue">S</span><span class="google-red">e</span><span class="google-yellow">p</span><span class="google-blue">a</span><span class="google-green">k</span><span class="google-red">B</span><span class="google-yellow">o</span><span class="google-blue">l</span><span class="google-green">a</span>
+        </a>
+        <div class="results-search-box">
+            <form id="searchForm" method="post" action="/search" class="position-relative">
+                <div class="search-box mb-0" id="searchBox">
+                    <button type="submit" class="search-icon" aria-label="Cari"><i class="fas fa-search"></i></button>
+                    <input type="text" id="queryInput" name="query" value="{{ query or '' }}" autocomplete="off" required />
+                    <input type="hidden" name="page" value="{{ page or 1 }}"><input type="hidden" name="sort_by" value="{{ sort_by or 'bm25' }}"><input type="hidden" name="sort_order" value="{{ sort_order or 'desc' }}">
+                </div>
+                <div class="suggestion-box" id="suggestions"></div>
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="search-tools">
+                    <select id="sortBySelect" aria-label="Sort by">
+                        <option value="bm25" {% if sort_by == 'bm25' %}selected{% endif %}>Urutkan berdasarkan BM25</option>
+                        <option value="bm25_plus" {% if sort_by == 'bm25_plus' %}selected{% endif %}>Urutkan berdasarkan BM25+</option>
+                        <option value="cosine" {% if sort_by == 'cosine' %}selected{% endif %}>Urutkan berdasarkan COSINE SIMILARITY</option>
+                    </select>
+                    <select id="sortOrderSelect" aria-label="Sort order">
+                        <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Menurun (Desc)</option>
+                        <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Menaik (Asc)</option>
+                    </select>
+                </div>
+                <div class="results-container">
+                    {% if correction %}<div class="spelling-correction" id="correctionLink"><i class="fas fa-spell-check"></i> Mungkin maksud Anda: <strong>{{ correction }}</strong> ?</div>{% endif %}
+                    {% if no_results %}<div class="search-stats"><p>Tidak ditemukan hasil untuk "<strong>{{ query }}</strong>".</p></div>
+                    {% elif results %}
+                        <div class="search-stats">Menampilkan <strong>{{ results|length }}</strong> hasil di halaman <strong>{{ page }}</strong> ({{ exec_time }} detik)</div>
+                        <div class="search-results">
+                            {% for r in results %}
+                            <div class="result-item">
+                                <h3 class="result-title"><a href="{{ r.url }}" title="{{ r.doc }}" target="_blank">{{ r.doc[:-4] }}</a></h3>
+                                <p class="result-snippet" data-snippet="{{ r.snippet|safe }}" data-fulltext="{{ r.full_doc_highlight|safe }}">{{ r.snippet | safe }}</p>
+                                <button class="read-more-btn">Baca selengkapnya</button>
+                                <div class="result-scores mt-1 d-flex align-items-center">
+                                    <span>BM25: {{ '%.4f' % r.bm25 }}</span><span class="mx-2">|</span><span>BM25+: {{ '%.4f' % r.bm25_plus }}</span><span class="mx-2">|</span><span>COSSIM: {{ '%.4f' % r.cosine }}</span>
+                                    <div class="ms-auto">
+                                        <button class="btn btn-sm btn-outline-success feedback-btn" data-doc="{{ r.doc }}" title="Tandai Relevan"><i class="fas fa-thumbs-up"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger feedback-btn-irrelevant" data-doc="{{ r.doc }}" title="Tandai Tidak Relevan"><i class="fas fa-thumbs-down"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <nav aria-label="Pagination" class="mt-4">
+                            <ul class="pagination pagination-google">
+                                {% if page > 1 %}<li class="page-item"><a class="page-link" href="#" data-page="{{ page - 1 }}"><i class="fas fa-chevron-left me-1"></i> Sebelumnya</a></li>{% endif %}
+                                {% set window = 5 %}{% set half_window = (window / 2) | round(method='floor') | int %}{% set start_page = (page - half_window) | int %}{% if start_page < 1 %}{% set start_page = 1 %}{% endif %}{% set end_page = (start_page + window - 1) | int %}{% if end_page > total_pages %}{% set end_page = total_pages %}{% set start_page = (end_page - window + 1) | int %}{% if start_page < 1 %}{% set start_page = 1 %}{% endif %}{% endif %}
+                                {% if start_page > 1 %}<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>{% if start_page > 2 %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}{% endif %}
+                                {% for p in range(start_page, end_page + 1) %}<li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="#" data-page="{{ p }}">{{ p }}</a></li>{% endfor %}
+                                {% if end_page < total_pages %}{% if end_page < total_pages - 1 %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}<li class="page-item"><a class="page-link" href="#" data-page="{{ total_pages }}">{{ total_pages }}</a></li>{% endif %}
+                                {% if page < total_pages %}<li class="page-item"><a class="page-link" href="#" data-page="{{ page + 1 }}">Selanjutnya <i class="fas fa-chevron-right ms-1"></i></a></li>{% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 comparison-col">
+                <h4><i class="fas fa-user-check"></i> Dokumen Relevan Manual</h4>
+                {% if human_docs %}
+                    <ul class="list-group list-group-flush">
+                        {% for doc in human_docs %}
+                            <li class="list-group-item">{{ doc }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Tidak ada data relevansi manual untuk query ini.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const queryInput = document.getElementById('queryInput');
+        const suggestionsList = document.getElementById('suggestions');
+        const searchForm = document.getElementById('searchForm');
+        const searchBox = document.getElementById('searchBox');
+
+        if (!queryInput || !suggestionsList || !searchForm || !searchBox) return;
+
+        const fetchAndShowSuggestions = async () => {
+            const q = queryInput.value;
+            const res = await fetch(`/autocomplete?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            
+            suggestionsList.innerHTML = '';
+            if (data.history.length === 0 && data.suggestions.length === 0) {
+                suggestionsList.style.display = 'none';
+                searchBox.classList.remove('active');
+                return;
+            }
+
+            data.history.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.dataset.query = s;
+                div.innerHTML = `<i class="fas fa-history suggestion-icon"></i><span class="suggestion-text">${s}</span><span class="suggestion-remove" title="Hapus dari riwayat">×</span>`;
+                suggestionsList.appendChild(div);
+            });
+
+            if (data.history.length > 0 && data.suggestions.length > 0) {
+                suggestionsList.appendChild(document.createElement('div')).className = 'suggestion-divider';
+            }
+
+            data.suggestions.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.dataset.query = s;
+                div.innerHTML = `<i class="fas fa-search suggestion-icon"></i><span class="suggestion-text">${s}</span>`;
+                suggestionsList.appendChild(div);
+            });
+            
+            suggestionsList.style.display = 'block';
+            searchBox.classList.add('active');
+        };
+
+        queryInput.addEventListener('input', fetchAndShowSuggestions);
+        queryInput.addEventListener('focus', fetchAndShowSuggestions);
+        
+        suggestionsList.addEventListener('click', (e) => {
+            const item = e.target.closest('.suggestion-item');
+            if (!item) return;
+
+            if (e.target.classList.contains('suggestion-remove')) {
+                e.stopPropagation();
+                const queryToDelete = item.dataset.query;
+                fetch('/delete_query', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ query: queryToDelete })
+                }).then(response => {
+                    if(response.ok) { item.remove(); }
+                });
+            } else {
+                queryInput.value = item.dataset.query;
+                searchForm.submit();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (searchForm && !searchForm.contains(e.target)) {
+                suggestionsList.style.display = 'none';
+                if(searchBox) searchBox.classList.remove('active');
+            }
+        });
+
+        // --- Event listeners untuk elemen di halaman hasil ---
+        const correctionLink=document.getElementById('correctionLink');
+        if(correctionLink){correctionLink.addEventListener('click',()=>{queryInput.value=correctionLink.querySelector('strong').textContent;searchForm.submit();});}
+        
+        const sortBySelect=document.getElementById('sortBySelect');
+        if(sortBySelect){sortBySelect.addEventListener('change',()=>{searchForm.querySelector('input[name="sort_by"]').value=sortBySelect.value;searchForm.submit();});}
+        
+        const sortOrderSelect=document.getElementById('sortOrderSelect');
+        if(sortOrderSelect){sortOrderSelect.addEventListener('change',()=>{searchForm.querySelector('input[name="sort_order"]').value=sortOrderSelect.value;searchForm.submit();});}
+        
+        document.querySelectorAll('.pagination a').forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();if(e.target.closest('li.disabled'))return;const page=e.target.dataset.page||e.target.closest('a').dataset.page;if(!page)return;searchForm.querySelector('input[name="page"]').value=page;searchForm.submit();});});
+        document.querySelectorAll('.read-more-btn').forEach(button=>{button.addEventListener('click',()=>{const p=button.closest('.result-item').querySelector('.result-snippet');if(button.textContent==='Baca selengkapnya'){p.innerHTML=p.dataset.fulltext.replace(/\n/g,'<br>');button.textContent='Kurangi';}else{p.innerHTML=p.dataset.snippet;button.textContent='Baca selengkapnya';}});});
+        
+        function handleFeedback(button, endpoint, successClass) {
+            const docName = button.dataset.doc;
+            const query = "{{ query }}";
+            button.disabled = true;
+            const otherBtn = button.classList.contains('feedback-btn') ? button.nextElementSibling : button.previousElementSibling;
+            if(otherBtn) otherBtn.disabled = true;
+            fetch(endpoint, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ query: query, doc_name: docName }) })
+            .then(res => { if (!res.ok) throw new Error('Gagal'); return res.json(); })
+            .then(data => { if (data.status === 'sukses') { button.classList.remove('btn-outline-success', 'btn-outline-danger'); button.classList.add(successClass); } else { button.disabled = false; if(otherBtn) otherBtn.disabled = false; } })
+            .catch(() => { button.disabled = false; if(otherBtn) otherBtn.disabled = false; });
+        }
+
+        document.querySelectorAll('.feedback-btn').forEach(button => { button.addEventListener('click', (e) => handleFeedback(e.currentTarget, '/feedback', 'btn-success')); });
+        document.querySelectorAll('.feedback-btn-irrelevant').forEach(button => { button.addEventListener('click', (e) => handleFeedback(e.currentTarget, '/feedback_irrelevant', 'btn-danger')); });
+    });
+    </script>
+</body>
+</html>
